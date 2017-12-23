@@ -1,0 +1,29 @@
+{
+  "name": "borker-api",
+  "version": "0.1.0",
+  "description": "RESTful Node.js API for Borker dog adoption app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hmmelton/Borker-API.git"
+  },
+  "author": "Harrison Melton <hmmelton95@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hmmelton/Borker-API/issues"
+  },
+  "homepage": "https://github.com/hmmelton/Borker-API#readme",
+  "devDependencies": {
+    "nodemon": "^1.14.3"
+  },
+  "dependencies": {
+    "body-parser": "1.18.2",
+    "express": "4.16.2",
+    "express-jwt": "5.3.0",
+    "jsonwebtoken": "8.1.0",
+    "mongoose": "4.13.7"
+  }
+}
