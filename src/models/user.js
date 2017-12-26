@@ -6,6 +6,10 @@ var userSchema = new Schema({
     type: String,
     required: true
   },
+  facebookId: {
+    type: String,
+    required: true
+  },
   firstName: {
     type: String,
     required: true
@@ -25,3 +29,7 @@ var userSchema = new Schema({
     required: true
   }
 });
+
+userSchema.statics.findUser = function(email, facebookId, callback) {
+  return this.find({ email: email, facebookId, facebookId }, callback);
+}
