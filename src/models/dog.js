@@ -30,7 +30,7 @@ var dogSchema = new Schema({
   },
   createdBy: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Shelter',
     required: true
   },
   createdWhen: {
