@@ -2,10 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var dogSchema = new Schema({
-  id: {
-    type: String,
-    required: true
-  },
   shelterId: {
     type: Schema.Types.ObjectId,
     ref: 'Shelter',
@@ -17,7 +13,7 @@ var dogSchema = new Schema({
   },
   breeds: [String],
   age: {
-    type: String,
+    type: Number,
     required: true
   },
   sex: {
@@ -41,16 +37,12 @@ var dogSchema = new Schema({
 });
 
 // Static methods for querying model
-dogSchema.statics.findById = function(id, callback) {
-  return this.find({ id: id }, callback);
-};
-
 dogSchema.statics.findByShelterId = function(shelterId, callback) {
-  return this.find({ shelterId: shelterId }, callback);
+  return this.find({ shelterId: shelterId }, callback).lean();
 };
 
 dogSchema.statics.findWithFilters = function(filters, callback) {
-  return this.find(filters, callback);
+  return this.find(filters, callback).lean();
 };
 
 module.exports = mongoose.model('Dog', dogSchema);

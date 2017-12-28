@@ -2,10 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
-  id: {
-    type: String,
-    required: true
-  },
   facebookId: {
     type: String,
     required: true
