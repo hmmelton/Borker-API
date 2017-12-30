@@ -1,7 +1,7 @@
 var express = require('express');
 var middleware = require('../middleware/authMiddleware');
-var dogRoutes = require('./dogRoutes');
-var authRoutes = require('./authRoutes');
+var dogRoutes = require('../controllers/dogController');
+var authRoutes = require('../controllers/authController');
 
 var app = express();
 
