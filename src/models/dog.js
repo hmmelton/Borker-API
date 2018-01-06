@@ -24,6 +24,10 @@ var dogSchema = new Schema({
     type: String,
     required: true
   },
+  images: {
+    type: [String],
+    required: true
+  },
   createdBy: {
     type: Schema.Types.ObjectId,
     ref: 'Shelter',

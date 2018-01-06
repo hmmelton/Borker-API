@@ -87,4 +87,7 @@ app.post('/filter', function(req, res, next) {
   });
 }, removeElements);
 
+// TODO: add endpoints for images.  This will likely be done through an app
+// specifically for shelters
+
 module.exports = app;
