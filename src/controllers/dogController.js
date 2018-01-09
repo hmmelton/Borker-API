@@ -26,7 +26,7 @@ app.post('/', function(req, res, next) {
   newDog.save(function(err, dog) {
     if (err) {
       // Send error back to client
-      res.status(400).send(err);
+      res.status(400).json(err);
     } else {
       // Send newly created dog back to client
       req.dog = dog;
@@ -40,7 +40,7 @@ app.get('/:id', function(req, res, next) {
   Dog.findById(req.params.id, function(err, dog) {
     if (err) {
 			// If there was an error, send it back to the client
-			res.status(500).send(err);
+			res.status(500).json(err);
 		} else if (dog === null) {
 			// If dog is null, send back error to client
 			res.status(404).json({ error: 'Dog not found' });
@@ -57,10 +57,10 @@ app.get('/shelter/:id', function(req, res, next) {
   Dog.findByShelterId(req.params.id, function(err, dogs) {
     if (err) {
       // Send error back to client
-      res.status(400).send(err);
+      res.status(400).json(err);
     } else if (dogs === null) {
       // Dogs were not found
-      res.status(404).send({ error: 'Dogs not found' });
+      res.status(404).json({ error: 'Dogs not found' });
     } else {
       // Dogs were found
       req.dogs = dogs;
@@ -75,10 +75,10 @@ app.post('/filter', function(req, res, next) {
   Dog.findWithFilters(filters, function(err, dogs) {
     if (err) {
       // Send error back to client
-      res.status(400).send(err);
+      res.status(400).json(err);
     } else if (dogs === null) {
       // Dogs were not found
-      res.status(404).send({ error: 'Dogs not found' });
+      res.status(404).json({ error: 'Dogs not found' });
     } else {
       // Dogs were found
       req.dogs = dogs;

@@ -29,3 +29,5 @@ var userSchema = new Schema({
 userSchema.statics.findUser = function(email, facebookId, callback) {
   return this.find({ email: email, facebookId, facebookId }, callback);
 }
+
+module.exports = mongoose.model('User', userSchema);

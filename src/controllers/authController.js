@@ -2,6 +2,7 @@ var jwt = require('jsonwebtoken');
 var express = require('express');
 var https = require('https');
 var config = require('../config');
+var User = require('../models/user');
 const SECRET = require('../config').jwtSecret;
 
 var app = express();
@@ -19,16 +20,38 @@ var createToken = function(id, duration) {
   });
 };
 
-// Get an access token and refresh token
-app.get('/tokens/:id', function(req, res) {
-  let token = createToken(req.params.id, ONE_DAY);
-  let refreshToken = createToken(req.params.id, SIX_MONTHS);
+var upsertUser = function(req, res) {
+  // Find user by Facebook ID
+  User.findOne({ facebookId: req.body.facebookId }, function(err, user) {
+    if (!user) {
+      // If there is an error...
+      let newUser = User(req.body);
 
-  res.status(200).send({ token: token, refreshToken: refreshToken });
-});
+      // ...try to save a new user
+      newUser.save(function(error, savedUser) {
+        if (error) {
+          // Return any error
+          res.json(error);
+        } else {
+          // Return access tokens to client
+          res.status(201).json({
+            accessToken: createToken(savedUser['_id'], ONE_DAY),
+            refreshToken: createToken(savedUser['_id'], SIX_MONTHS)
+          });
+        }
+      });
+    } else if (!err) {
+      // If there is no error, send access tokens back to client
+      res.status(200).json({
+        accessToken: createToken(user['_id'], ONE_DAY),
+        refreshToken: createToken(user['_id'], SIX_MONTHS)
+      });
+    }
+  });
+};
 
 // Validate a Facebook auth token
-app.get('/validate_token/:token', function(req, res) {
+app.post('/validate_token/:token', function(req, res, next) {
   var options = {
     method: 'GET',
     host: 'graph.facebook.com',
@@ -43,7 +66,12 @@ app.get('/validate_token/:token', function(req, res) {
 
     fbRes.on("end", function () {
       var body = Buffer.concat(chunks);
-      res.sendStatus(fbRes.statusCode);
+      if (fbRes.statusCode == 200) {
+        next();
+      } else {
+        // There was an error -> send it back to the user
+        res.sendStatus(fbRes.statusCode);
+      }
     });
 
     fbRes.on('error', error => {
@@ -51,6 +79,6 @@ app.get('/validate_token/:token', function(req, res) {
       res.sendStatus(fbRes.statusCode);
     });
   }).end();
-});
+}, upsertUser);
 
 module.exports = app;
