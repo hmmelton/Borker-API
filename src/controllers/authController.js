@@ -34,24 +34,24 @@ var upsertUser = function(req, res) {
           res.json(error);
         } else {
           // Return access tokens to client
-          res.status(201).json({
-            accessToken: createToken(savedUser['_id'], ONE_DAY),
-            refreshToken: createToken(savedUser['_id'], SIX_MONTHS)
-          });
+          res.status(201).set({
+            'Access-Token': createToken(savedUser['_id'], ONE_DAY),
+            'Refresh-Token': createToken(savedUser['_id'], SIX_MONTHS),
+          }).json(user);
         }
       });
     } else if (!err) {
       // If there is no error, send access tokens back to client
-      res.status(200).json({
-        accessToken: createToken(user['_id'], ONE_DAY),
-        refreshToken: createToken(user['_id'], SIX_MONTHS)
-      });
+      res.status(200).set({
+        'Access-Token': createToken(savedUser['_id'], ONE_DAY),
+        'Refresh-Token': createToken(savedUser['_id'], SIX_MONTHS),
+      }).json(user);
     }
   });
 };
 
 // Validate a Facebook auth token
-app.post('/validate_token/:token', function(req, res, next) {
+app.post('/login/:token', function(req, res, next) {
   var options = {
     method: 'GET',
     host: 'graph.facebook.com',
